@@ -9,7 +9,6 @@ import java.awt.event.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
-// comments
 public class UserInterface extends JFrame implements KeyListener, MouseListener {
 
     private AsciiPanel terminal;
