@@ -27,7 +27,7 @@ public class UserInterface extends JFrame implements KeyListener, MouseListener 
 
         super.add(terminal);
         super.addKeyListener(this);
-        super.setSize(screenWidth*9, screenHeight*16);
+        super.setSize(screenWidth * font.getWidth(), screenHeight * font.getHeight());
         super.setVisible(true);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.repaint();
