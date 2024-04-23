@@ -33,6 +33,8 @@ public class UserInterface extends JFrame implements KeyListener, MouseListener 
         super.repaint();
     }
 
+    public void clear() { terminal.clear(); };
+
     public InputEvent getNextInput() {
         return inputQueue.poll();
     }
