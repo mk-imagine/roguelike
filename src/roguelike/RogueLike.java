@@ -25,12 +25,14 @@ public class RogueLike {
 
     private UserInterface ui;
 
-    public RogueLike(String name) {
+    public RogueLike(String name, int mapWidth, int mapHeight) {
         this.name = name;
-        this.player = new Creature("player", '@', Color.white, 15, 15);
-        // let's add a player that can move around
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
 
-        ui = new UserInterface(this.name, 80, 24);
+        ui = new UserInterface(this.name, mapWidth, mapHeight); // 80,24
+
+        createWorld();
     }
 
     public void render() {
@@ -89,16 +91,16 @@ public class RogueLike {
 
     private void createWorld(){
         this.player = new Creature("player", '@', Color.white, 10, 10);
-        world = new WorldBuilder(mapWidth, mapHeight)
+        this.world = new WorldBuilder(mapWidth, mapHeight)
                 .fill("wall")
                 .createRandomWalkCave(12232, 10, 10, 6000)
                 .build();
-        world.player = player;
-        world.addEntity(player);
+        this.world.player = player;
+        this.world.addCreature(player);
     }
 
     public static void main(String[] args) {
-        RogueLike game = new RogueLike("A small roguelike game");
+        RogueLike game = new RogueLike("A small roguelike game", 84, 24);
         game.run();
     }
 }
