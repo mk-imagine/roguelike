@@ -1,17 +1,24 @@
 package roguelike;
+
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
+
 import roguelike.entities.Entity;
 import roguelike.entities.Creature;
 import roguelike.ui.UserInterface;
+import roguelike.world.World;
+import roguelike.world.WorldBuilder;
 
 public class RogueLike {
     private String name;
 
-    private Entity thing;
-
+    private World world;
     private Creature player;
+
+    private int mapWidth;
+    private int mapHeight;
+
     private boolean isRunning;
     private int framesPerSecond = 60;
     private int timePerLoop = 1000000000 / framesPerSecond;
@@ -20,7 +27,6 @@ public class RogueLike {
 
     public RogueLike(String name) {
         this.name = name;
-        this.thing = new Entity("thing", '#', Color.white, 10, 10);
         this.player = new Creature("player", '@', Color.white, 15, 15);
         // let's add a player that can move around
 
@@ -29,7 +35,6 @@ public class RogueLike {
 
     public void render() {
         ui.clear();
-        ui.drawChar(thing.getGlyph(), thing.getX(), thing.getY(), thing.getColor());
         ui.drawChar(player.getGlyph(), player.getX(), player.getY(), player.getColor());
         ui.refresh();
     }
@@ -64,22 +69,32 @@ public class RogueLike {
             switch (keypress.getKeyCode()){
                 case KeyEvent.VK_LEFT:
                     // code to move player left
-                    player.move(-1, 0);
+                    player.move(world, -1, 0);
                     break;
                 case KeyEvent.VK_RIGHT:
                     // code to move player right
-                    player.move(1, 0);
+                    player.move(world, 1, 0);
                     break;
                 case KeyEvent.VK_UP:
                     // code to move player up
-                    player.move(0, -1);
+                    player.move(world, 0, -1);
                     break;
                 case KeyEvent.VK_DOWN:
-                    player.move(0, 1);
+                    player.move(world, 0, 1);
                     // code to move player down
                     break;
             }
         }
+    }
+
+    private void createWorld(){
+        this.player = new Creature("player", '@', Color.white, 10, 10);
+        world = new WorldBuilder(mapWidth, mapHeight)
+                .fill("wall")
+                .createRandomWalkCave(12232, 10, 10, 6000)
+                .build();
+        world.player = player;
+        world.addEntity(player);
     }
 
     public static void main(String[] args) {
